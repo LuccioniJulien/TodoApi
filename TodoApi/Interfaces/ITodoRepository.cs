@@ -6,12 +6,12 @@ using TodoApi.Model;
 
 namespace TodoApi.Interfaces
 {
-    interface ITodoRepository
+    public interface ITodoRepository
     {
         void Add(TodoItem todo);
-
         void Delete(TodoItem todo);
-
+        TodoItem Get(int id);
+        List<TodoItem> GetAll();
         int Count();
     }
 }

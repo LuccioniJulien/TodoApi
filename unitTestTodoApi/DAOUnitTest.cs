@@ -1,5 +1,6 @@
 ﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
 using TodoApi.Dao;
+using TodoApi.Interfaces;
 using TodoApi.Model;
 
 namespace unitTestTodoApi

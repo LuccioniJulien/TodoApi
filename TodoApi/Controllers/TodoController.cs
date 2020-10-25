@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
+using TodoApi.Interfaces;
+using TodoApi.Model;
 
 // For more information on enabling Web API for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 
@@ -12,24 +14,37 @@ namespace TodoApi.Controllers
     [ApiController]
     public class TodoController : ControllerBase
     {
-        // GET: api/<TodoController>
-        [HttpGet]
-        public IEnumerable<string> Get()
+        private readonly ITodoRepository _repository;
+        public TodoController(ITodoRepository repository)
         {
-            return new string[] { "value1", "value2" };
+            _repository = repository;
         }
 
         // GET api/<TodoController>/5
         [HttpGet("{id}")]
-        public string Get(int id)
+        public ActionResult<TodoItem> Get(int id)
         {
-            return "value";
+            var todo = _repository.Get(id);
+            if (todo == null)
+            {
+                return NotFound();
+            }
+
+            return Ok(todo);
         }
 
         // POST api/<TodoController>
         [HttpPost]
-        public void Post([FromBody] string value)
+        public ActionResult Post([FromBody] TodoItem value)
         {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest();
+            }
+
+            _repository.Add(value);
+
+            return Created("api/todo", value);
         }
 
         // PUT api/<TodoController>/5
@@ -42,6 +57,7 @@ namespace TodoApi.Controllers
         [HttpDelete("{id}")]
         public void Delete(int id)
         {
+            _repository.Delete(new TodoItem() { Id = id });
         }
     }
 }

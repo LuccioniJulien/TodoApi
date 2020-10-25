@@ -19,5 +19,9 @@ namespace TodoApi.Dao
         public void Delete(TodoItem todo) => _todoItems.Remove(todo);
 
         public int Count() => _todoItems.Count();
+
+        public TodoItem Get(int id) => _todoItems.First(t => t.Id == id);
+
+        public List<TodoItem> GetAll() =>_todoItems;
     }
 }
