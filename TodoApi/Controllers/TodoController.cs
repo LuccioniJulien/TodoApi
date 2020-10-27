@@ -15,6 +15,7 @@ namespace TodoApi.Controllers
     public class TodoController : ControllerBase
     {
         private readonly ITodoRepository _repository;
+
         public TodoController(ITodoRepository repository)
         {
             _repository = repository;
@@ -32,6 +33,15 @@ namespace TodoApi.Controllers
 
             return Ok(todo);
         }
+
+        // GET api/<TodoController>/5
+        [HttpGet]
+        public ActionResult<List<TodoItem>> Get()
+        {
+            var todos = _repository.GetAll();
+            return Ok(todos);
+        }
+
 
         // POST api/<TodoController>
         [HttpPost]
@@ -55,9 +65,16 @@ namespace TodoApi.Controllers
 
         // DELETE api/<TodoController>/5
         [HttpDelete("{id}")]
-        public void Delete(int id)
+        public ActionResult Delete(int id)
         {
-            _repository.Delete(new TodoItem() { Id = id });
+            var todo = _repository.Get(id);
+            if (todo == null)
+            {
+                return BadRequest();
+            }
+
+            _repository.Delete(todo);
+            return NoContent();
         }
     }
 }
