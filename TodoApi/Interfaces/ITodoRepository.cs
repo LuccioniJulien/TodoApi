@@ -10,6 +10,7 @@ namespace TodoApi.Interfaces
     {
         void Add(TodoItem todo);
         void Delete(TodoItem todo);
+        void Update(TodoItem todo);
         TodoItem Get(int id);
         List<TodoItem> GetAll();
         int Count();

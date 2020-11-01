@@ -95,7 +95,7 @@ namespace unitTestTodoApi
 
         #endregion
 
-        #region Delete
+        #region DELETE
 
         [TestMethod]
         public void Test_Delete_Success()
@@ -121,12 +121,35 @@ namespace unitTestTodoApi
 
             var result = _todoController.Delete(id);
 
-            Assert.IsInstanceOfType(result, typeof(BadRequestResult));
+            Assert.IsInstanceOfType(result, typeof(NoContentResult));
         }
 
         #endregion
 
         #region PUT
+
+        [TestMethod]
+        public void Update_Success()
+        {
+            var todo = new TodoItem() {Id = 1, Description = ""};
+            _todosRepository.Setup(x => x.Get(1)).Returns(todo);
+            _todosRepository.Setup(x => x.Update(todo));
+
+            var result = _todoController.Put(1, todo);
+
+            Assert.IsInstanceOfType(result, typeof(NoContentResult));
+        }
+
+        [TestMethod]
+        public void Update_Fail()
+        {
+            TodoItem todo = null;
+            _todosRepository.Setup(x => x.Get(1)).Returns(todo);
+
+            var result = _todoController.Put(1, todo);
+
+            Assert.IsInstanceOfType(result, typeof(BadRequestResult));
+        }
 
         #endregion
     }

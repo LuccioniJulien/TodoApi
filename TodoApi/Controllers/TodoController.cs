@@ -59,8 +59,16 @@ namespace TodoApi.Controllers
 
         // PUT api/<TodoController>/5
         [HttpPut("{id}")]
-        public void Put(int id, [FromBody] string value)
+        public ActionResult Put(int id, [FromBody] TodoItem value)
         {
+            var todo = _repository.Get(id);
+            if (todo == null)
+            {
+                return BadRequest();
+            }
+
+            _repository.Update(value);
+            return NoContent();
         }
 
         // DELETE api/<TodoController>/5

@@ -23,6 +23,12 @@ namespace TodoApi.Dao
 
         public void Delete(TodoItem todo) => _todoItems.Remove(todo);
 
+        public void Update(TodoItem todo)
+        {
+            var index = _todoItems.IndexOf(todo);
+            _todoItems[index] = todo;
+        }
+
         public int Count() => _todoItems.Count();
 
         public TodoItem Get(int id) => _todoItems.FirstOrDefault(t => t.Id == id);

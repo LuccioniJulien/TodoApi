@@ -49,12 +49,28 @@ namespace unitTestTodoApi
         [TestMethod]
         public void Test_Delete()
         {
-            var todo = new TodoItem() {Id = 2};
-            TodoItem todo2 = null;
+            var todo = new TodoItem() {Description = "s"};
+            TodoItem todo2 = new TodoItem() {Description = "a"};
             _todosRepository.Add(todo);
             _todosRepository.Add(todo2);
             _todosRepository.Delete(todo);
             Assert.IsTrue(_todosRepository.Count() == 1);
+        }
+
+        [TestMethod]
+        public void Test_Update()
+        {
+            var todo = new TodoItem() {Description = "Yes a todo item"};
+            TodoItem todo2 = new TodoItem() {Description = "Yes a todo item 2"};
+            _todosRepository.Add(todo);
+            _todosRepository.Add(todo2);
+            var newTodo = new TodoItem() {Id = 1,
+                
+                Description = "updated"};
+            _todosRepository.Update(newTodo);
+
+            var todoUpdated = _todosRepository.Get(1);
+            Assert.IsTrue(todoUpdated.Description == "updated");
         }
     }
 }
